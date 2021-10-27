@@ -1,5 +1,7 @@
-import { IsNotEmpty } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsEmail, IsNotEmpty } from 'class-validator';
+import { type } from 'os';
+import { Task } from 'src/tasks/task.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Table } from 'typeorm';
 
 @Entity()
 export class User {
@@ -8,8 +10,12 @@ export class User {
 
   @Column({ unique: true })
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @Column()
   password: string;
+
+  @OneToMany((_type) => Task, (task) => task.user, { eager: true })
+  tasks: Task[];
 }
