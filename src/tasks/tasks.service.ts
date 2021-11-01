@@ -6,6 +6,7 @@ import { TaskRepository } from './task.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { User } from 'src/auth/user.entity';
+import { isUUID } from 'class-validator';
 @Injectable()
 export class TasksService {
   constructor(
@@ -18,6 +19,9 @@ export class TasksService {
   }
 
   async getTaskById(id: string, user: User): Promise<Task> {
+    if (!isUUID(id)) {
+      throw new NotFoundException(`Task with ID ${id} not found`);
+    }
     const found = await this.taskRepository.findOne({ where: { id, user } });
     if (!found) {
       throw new NotFoundException(`Task with ID ${id} not found`);
@@ -26,6 +30,9 @@ export class TasksService {
   }
 
   async deleteTask(id: string, user: User): Promise<void> {
+    if (!isUUID(id)) {
+      throw new NotFoundException(`Task with ID ${id} not found`);
+    }
     const result = await this.taskRepository.delete({ id, user });
     if (result.affected === 0) {
       throw new NotFoundException(`Task with ID ${id} not found`);
