@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { type } from 'os';
-import { Task } from 'src/tasks/task.entity';
+import { Task } from '../tasks/task.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Table } from 'typeorm';
 
 @Entity()
